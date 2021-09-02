@@ -1,37 +1,22 @@
-from rest_framework.viewsets import ModelViewSet
- 
-from shop.models import Category
-from shop.models import Product
-from shop.models import Article
-from shop.serializers import CategorySerializer
-from shop.serializers import ProductSerializer
-from shop.serializers import ArticleSerializer
+from rest_framework.views import APIView
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.response import Response
 
-class CategoryViewset(ModelViewSet):
+from shop.models import Category, Product
+from shop.serializers import CategorySerializer, ProductSerializer
+
+
+class CategoryViewset(ReadOnlyModelViewSet):
+
     serializer_class = CategorySerializer
 
     def get_queryset(self):
         return Category.objects.all()
-    
-class ProductViewset(ModelViewSet):
-    serializer_class = ProductSerializer
 
-    def get_queryset(self):
-    # Nous récupérons tous les produits dans une variable nommée queryset
-        queryset = Product.objects.filter(active=True)
-        # Vérifions la présence du paramètre ‘category_id’ dans l’url et si oui alors appliquons notre filtre
-        category_id = self.request.GET.get('category_id')
-        if category_id is not None:
-            queryset = queryset.filter(category_id=category_id)
-        return queryset
-    
-class ArticleViewset(ModelViewSet):
-    serializer_class = ArticleSerializer
 
-    def get_queryset(self):
-        queryset =  Article.objects.filter(active=True)
+class ProductView(APIView):
 
-        product_id = self.request.GET.get('product_id')
-        if product_id is not None:
-            queryset = queryset.filter(product_id=product_id)
-        return queryset
+    def get(self, *args, **kwargs):
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True)
+        return Response(serializer.data)
