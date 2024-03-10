@@ -10,7 +10,7 @@ router = routers.SimpleRouter()
 # Puis lui déclarons une url basée sur le mot clé ‘category’ et notre view
 # afin que l’url générée soit celle que nous souhaitons ‘/api/category/’
 router.register('category', CategoryViewset, basename='category'),
-router.regsiter('product', ProductViewset, basename='product')
+router.register('product', ProductViewset, basename='product')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
