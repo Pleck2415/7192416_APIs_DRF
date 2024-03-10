@@ -23,7 +23,7 @@ class TestCategory(APITestCase):
         self.assertEqual(response.status_code, 200)
         expected = [
             {
-                'id': category.pk,
+                'id': category.id,
                 'name': category.name,
                 'date_created': self.format_datetime(category.date_created),
                 'date_updated': self.format_datetime(category.date_updated)
