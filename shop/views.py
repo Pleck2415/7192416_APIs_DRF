@@ -3,15 +3,13 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from shop.models import Category, Product, Article
 from shop.serializers import CategorySerializer, ProductSerializer, ArticleSerializer
 
-
 class CategoryViewset(ReadOnlyModelViewSet):
 
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        return Category.objects.filter(active=True)
-
-
+        return Category.objects.filter(active=True) 
+       
 class ProductViewset(ReadOnlyModelViewSet):
 
     serializer_class = ProductSerializer
@@ -22,7 +20,6 @@ class ProductViewset(ReadOnlyModelViewSet):
         if category_id:
             queryset = queryset.filter(category_id=category_id)
         return queryset
-
 
 class ArticleViewset(ReadOnlyModelViewSet):
 
