@@ -1,26 +1,26 @@
 from django.contrib import admin
-from shop.models import Category, Product, Article
+from shop.models import User
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'active')
-
-
-class ProductAdmin(admin.ModelAdmin):
-
-    list_display = ('name', 'category', 'active')
+    list_display = ('userName', 'active')
 
 
-class ArticleAdmin(admin.ModelAdmin):
+# class ProductAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'product', 'category', 'active')
-
-    @admin.display(description='Category')
-    def category(self, obj):
-        return obj.product.category
+#     list_display = ('name', 'category', 'active')
 
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Article, ArticleAdmin)
+# class ArticleAdmin(admin.ModelAdmin):
+
+#     list_display = ('name', 'product', 'category', 'active')
+
+#     @admin.display(description='Category')
+#     def category(self, obj):
+#         return obj.product.category
+
+
+# admin.site.register(Category, CategoryAdmin)
+# admin.site.register(Product, ProductAdmin)
+admin.site.register(User, UserAdmin)

@@ -1,67 +1,79 @@
 from rest_framework import serializers
 
-from shop.models import Category, Product, Article
+from shop.models import User
 
-class ArticleSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Article
-        fields = ['id', 'date_created', 'date_updated', 'name', 'price', 'product']
-
-    def validate_price(self, value):
-        if value < 1:
-            raise serializers.ValidationError('Price must be greater than 1')
-        return value
-
-    def validate_product(self, value):
-        if value.active is False:
-            raise serializers.ValidationError('Inactive product')
-        return value
-    
-class ProductDetailSerializer(serializers.ModelSerializer):
-
-    articles = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = Product
-        fields = ['id', 'date_created', 'date_updated', 'name', 'category', 'articles']
-
-    def get_articles(self, instance):
-        queryset = instance.articles.filter(active=True)
-        serializer = ArticleSerializer(queryset, many=True)
-        return serializer.data
-    
-class ProductListSerializer(serializers.ModelSerializer):
+class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Product
-        fields = ['id', 'date_created', 'date_updated', 'name', 'category', 'ecoscore']
-
-class CategoryDetailSerializer(serializers.ModelSerializer):
-
-    products = serializers.SerializerMethodField()
+        model = User
+        fields = ['id', 'userName', 'email', 'firstName', 'lastName']
+    
+class UserListSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Category
-        fields = ['id', 'date_created', 'date_updated', 'name', 'description', 'products']
+        model = User
+        fields = ['id', 'userName', 'email', 'firstName', 'lastName']
 
-    def get_products(self, instance):
-        queryset = instance.products.filter(active=True)
-        serializer = ProductListSerializer(queryset, many=True)
-        return serializer.data
+# class ArticleSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Article
+#         fields = ['id', 'date_created', 'date_updated', 'name', 'price', 'product']
+
+#     def validate_price(self, value):
+#         if value < 1:
+#             raise serializers.ValidationError('Price must be greater than 1')
+#         return value
+
+#     def validate_product(self, value):
+#         if value.active is False:
+#             raise serializers.ValidationError('Inactive product')
+#         return value
     
-class CategoryListSerializer(serializers.ModelSerializer):
+# class ProductDetailSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Category
-        fields = ['id', 'date_created', 'date_updated', 'name', 'description']
-
-    def validate_name(self, value):
-        if Category.objects.filter(name=value).exists():
-            raise serializers.ValidationError('Category already exists')
-        return value
+#     articles = serializers.SerializerMethodField()
     
-    def validate(self, data):
-        if data['name'] not in data['description']:
-            raise serializers.ValidationError('Name must be in description')
-        return data
+#     class Meta:
+#         model = Product
+#         fields = ['id', 'date_created', 'date_updated', 'name', 'category', 'articles']
+
+#     def get_articles(self, instance):
+#         queryset = instance.articles.filter(active=True)
+#         serializer = ArticleSerializer(queryset, many=True)
+#         return serializer.data
+    
+# class ProductListSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Product
+#         fields = ['id', 'date_created', 'date_updated', 'name', 'category', 'ecoscore']
+
+# class CategoryDetailSerializer(serializers.ModelSerializer):
+
+#     products = serializers.SerializerMethodField()
+
+#     class Meta:
+#         model = Category
+#         fields = ['id', 'date_created', 'date_updated', 'name', 'description', 'products']
+
+#     def get_products(self, instance):
+#         queryset = instance.products.filter(active=True)
+#         serializer = ProductListSerializer(queryset, many=True)
+#         return serializer.data
+    
+# class CategoryListSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Category
+#         fields = ['id', 'date_created', 'date_updated', 'name', 'description']
+
+#     def validate_name(self, value):
+#         if Category.objects.filter(name=value).exists():
+#             raise serializers.ValidationError('Category already exists')
+#         return value
+    
+#     def validate(self, data):
+#         if data['name'] not in data['description']:
+#             raise serializers.ValidationError('Name must be in description')
+#         return data
